@@ -1,18 +1,18 @@
 /**
- * Slotmachine_js:
+ * Slotmachine:
  * a funny application to select an item randomly.
  * <br>
  * @author y-takata, 2013/Oct/15
  */
 
 String[] allItems = {
-  "1班",
-  "2班",
-  "3班",
-  "4班",
-  "5班",
-  "6班",
-  "7班",
+  "Apple",
+  "Banana",
+  "Cherry",
+  "Date",
+  "Elderberry",
+  "Fig",
+  "Grape",
 };
 
 final float LINE_HEIGHT = 68;
@@ -128,4 +128,3 @@ class Items {
     }
   }
 }
-
