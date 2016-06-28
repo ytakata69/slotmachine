@@ -22,10 +22,6 @@ final int STOPPED  = 2;
 
 Items items;
 
-float y = 0.0;
-float vy = 0.2;
-int phase = ROLLING;
-
 void setup() {
   size(400, 160);
   items = new Items();
@@ -36,48 +32,56 @@ void setup() {
   textAlign(CENTER, BOTTOM);
 }
 
-int index(float y, int i) {
-  return (int(y) + i) % items.size();
+int y = 0; // height_of_one_item == 1000
+int vy = 200;
+int phase = ROLLING;
+
+int index(int y, int i) {
+  return (int(y/1000) + i) % items.size();
 }
 
 void draw() {
-  float dy = y - int(y);
+  float dy = (y % 1000) / 1000.0;
   background(0);
   for (int i = 0; i < 5; i++) {
     text(items.get(index(y, i)),
-         width/2, height + (dy - i) * LINE_HEIGHT);
+         width/2, height - (i - dy) * LINE_HEIGHT);
   }
 
   if (phase == STOPPING) {
-    if (vy >= 0.002) {
-      vy -= 0.001;  // slowing down
+    if (vy >= 1) {
+      vy -= 1;  // slowing down
     } else {
       phase = STOPPED;
-      vy = 0.2;     // re-initialize
+      vy = 200; // re-initialize
     }
   }
   if (phase != STOPPED) {
     y += vy;
   }
   if (phase == STOPPED) {
-    rect(20, height + (dy - 2) * LINE_HEIGHT,
+    rect(20, height - (2 - dy) * LINE_HEIGHT,
          width - 40, LINE_HEIGHT);
   }
 }
 
 void mousePressed() {
-  if (mouseX < width/4 && mouseY < height/2) {
+  // Reset the items by clicking the upper-left corner.
+  if (mouseX < width/8 && mouseY < height/4) {
+    y = y % (items.size() * 1000);
     items.reset();
     phase = ROLLING;
-    vy = 0.2;
+    vy = 200;
   }
   else if (phase == ROLLING) {
     phase = STOPPING;
   }
   else if (phase == STOPPED) {
-    items.remove(index(y, 1));
-    phase = ROLLING;
-    if (items.size() <= 0) noLoop(); // no items remain
+    if (items.size() > 1) {
+      y = y % (items.size() * 1000);
+      items.remove(index(y, 1));
+      phase = ROLLING;
+    }
   }
 }
 
