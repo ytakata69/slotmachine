@@ -15,7 +15,7 @@ String[] allItems = {
   "Grape",
 };
 
-final float LINE_HEIGHT = 68;
+final int LINE_HEIGHT = 68;
 final int ROLLING  = 0;
 final int STOPPING = 1;
 final int STOPPED  = 2;
